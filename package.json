@@ -4,7 +4,18 @@
   "main": "index.js",
   "scripts": {
     "db:start": "docker-compose up --build -d",
-    "db:stop": "docker-compose down"
+    "db:stop": "docker-compose down",
+    "db:make": "pg-bump create",
+    "db:up": "pg-bump up",
+    "db:down": "pg-bump down",
+    "db:cycle": "run-s -s db:down db:up"
+  },
+  "pgBump": {
+    "require": [
+      "dotenv/config"
+    ],
+    "files": "database/migrations/",
+    "connectionVar": "POSTGRES_URL"
   },
   "repository": {
     "type": "git",
@@ -16,5 +27,12 @@
   "bugs": {
     "url": "https://github.com/thebearingedge/rich-uncles-api/issues"
   },
-  "homepage": "https://github.com/thebearingedge/rich-uncles-api#readme"
+  "homepage": "https://github.com/thebearingedge/rich-uncles-api#readme",
+  "dependencies": {
+    "dotenv": "6.2.0",
+    "pg-bump": "3.0.0-beta.4"
+  },
+  "devDependencies": {
+    "npm-run-all": "4.1.5"
+  }
 }
