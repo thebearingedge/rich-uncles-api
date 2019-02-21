@@ -115,11 +115,20 @@
   },
   "homepage": "https://github.com/thebearingedge/rich-uncles-api#readme",
   "dependencies": {
+    "axios": "0.18.0",
+    "bcrypt": "3.0.4",
+    "boom": "7.3.0",
     "chai": "4.2.0",
     "chai-struct": "3.0.4",
     "dotenv": "6.2.0",
     "esm": "3.2.5",
-    "pg-bump": "3.0.0-beta.4"
+    "express": "4.16.4",
+    "express-promise-router": "3.0.3",
+    "knex": "0.16.3",
+    "lodash": "4.17.11",
+    "pg": "7.8.1",
+    "pg-bump": "3.0.0-beta.4",
+    "yup": "0.26.10"
   },
   "devDependencies": {
     "babel-eslint": "10.0.1",
