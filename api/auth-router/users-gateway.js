@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt'
-
-const ENCRYPTION_SALT_ROUNDS = parseInt(process.env.ENCRYPTION_SALT_ROUNDS)
+import jwt from 'jsonwebtoken'
 
 export default function usersGateway({ knex }) {
   return {
@@ -15,12 +14,15 @@ export default function usersGateway({ knex }) {
       return exists
     },
     async create({ password: unhashed, ...user }) {
-      const password = await bcrypt.hash(unhashed, ENCRYPTION_SALT_ROUNDS)
+      const password = await bcrypt.hash(
+        unhashed,
+        parseInt(process.env.ENCRYPTION_SALT_ROUNDS, 10)
+      )
       const [ created ] = await knex
         .insert({ password, ...user })
         .into('users')
         .returning([
-          'user_id',
+          'userId',
           'email',
           'firstName',
           'lastName',
@@ -28,6 +30,18 @@ export default function usersGateway({ knex }) {
           'updatedAt'
         ])
       return created
+    },
+    async authenticate({ email, password: unhashed }) {
+      const user = await knex
+        .select(['userId', 'password'])
+        .from('users')
+        .where({ email })
+        .first()
+      if (!user) return { token: null }
+      const { userId, password: hashed } = user
+      const passwordsMatch = await bcrypt.compare(unhashed, hashed)
+      if (!passwordsMatch) return { token: null }
+      return { token: jwt.sign({ userId }, process.env.JWT_SECRET) }
     }
   }
 }
