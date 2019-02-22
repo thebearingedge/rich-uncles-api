@@ -1,0 +1,3 @@
+-r esm
+-r dotenv/config
+api/**/*.test.js
