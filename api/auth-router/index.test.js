@@ -30,6 +30,27 @@ describe('/auth/sign-up', () => {
 
   })
 
+  context('when the user tries to sign up with a duplicate email', () => {
+
+    it('returns a Bad Request error', async () => {
+      const first = await client.post('/auth/sign-up', {
+        firstName: 'Tim',
+        lastName: 'Davis',
+        email: 'contact@timdav.is',
+        password: 'foobarbaz'
+      })
+      expect(first.status).to.equal(201)
+      const second = await client.post('/auth/sign-up', {
+        firstName: 'Tim',
+        lastName: 'Davis',
+        email: 'contact@timdav.is',
+        password: 'foobarbaz'
+      })
+      expect(second.status).to.equal(400)
+    })
+
+  })
+
   context('when the user supplies invalid account information', () => {
 
     it('returns a Bad Request error', async () => {

@@ -1,3 +1,4 @@
+import boom from 'boom'
 import * as yup from 'yup'
 import { validate } from '../util'
 
@@ -11,8 +12,11 @@ const validateSignUp = validate({
 })
 
 const createUser = ({ users }) =>
-  async ({ body }, res) => {
-    const user = await users.create(body)
+  async (req, res) => {
+    const { email, ...body } = req.body
+    const exists = await users.exists({ email })
+    if (exists) throw boom.badRequest(`The email address ${email} is already signed up.`)
+    const user = await users.create({ email, ...body })
     res.status(201).json(user)
   }
 
