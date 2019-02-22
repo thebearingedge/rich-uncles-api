@@ -1,8 +1,9 @@
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
-import { errorHandler } from './util'
 import authRouter from './auth-router'
+import { errorHandler, authorize } from './util'
+import transactionsRouter from './transactions-router'
 
 export default function createApi({ knex }) {
   return express()
@@ -10,5 +11,7 @@ export default function createApi({ knex }) {
     .use(cors())
     .use(express.json())
     .use('/auth', authRouter({ knex }))
+    .use(authorize)
+    .use('/transactions', transactionsRouter({ knex }))
     .use(errorHandler())
 }
