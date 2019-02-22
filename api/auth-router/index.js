@@ -6,4 +6,5 @@ export default function authRouter({ knex }) {
   const users = usersGateway({ knex })
   return new Router()
     .post('/sign-up', middleware.handleSignUp({ users }))
+    .post('/log-in', middleware.handleLogin({ users }))
 }

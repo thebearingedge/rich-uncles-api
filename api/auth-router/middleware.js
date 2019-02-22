@@ -4,7 +4,7 @@ import { validate } from '../util'
 
 const validateSignUp = validate({
   body: yup.object().shape({
-    email: yup.string().email().required(),
+    email: yup.string().trim().email().required(),
     password: yup.string().trim().required(),
     firstName: yup.string().trim().required(),
     lastName: yup.string().trim().required()
@@ -23,4 +23,24 @@ const createUser = ({ users }) =>
 export const handleSignUp = ({ users }) => [
   validateSignUp,
   createUser({ users })
+]
+
+const validateLogin = validate({
+  body: yup.object().shape({
+    email: yup.string().trim().email().required(),
+    password: yup.string().trim().required()
+  })
+})
+
+const authenticateUser = ({ users }) =>
+  async (req, res) => {
+    const { body: { email, password } } = req
+    const { token } = await users.authenticate({ email, password })
+    if (!token) throw boom.unauthorized('Invalid login.')
+    res.status(201).json({ token })
+  }
+
+export const handleLogin = ({ users }) => [
+  validateLogin,
+  authenticateUser({ users })
 ]
