@@ -64,4 +64,11 @@ export const inject = setup => done => {
 
 export const handled = promise => promise.catch(identity)
 
+export const TEST_USER = {
+  email: 'contact@timdav.is',
+  password: 'foobarbaz',
+  firstName: 'Tim',
+  lastName: 'Davis'
+}
+
 export { expect } from 'chai'

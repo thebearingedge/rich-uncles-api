@@ -1,4 +1,4 @@
-import { inject, expect } from '../test'
+import { inject, expect, TEST_USER } from '../test'
 
 describe('/auth/sign-up', () => {
 
@@ -69,12 +69,6 @@ describe('/auth/sign-up', () => {
 describe('/auth/log-in', () => {
 
   let client
-  const TEST_USER = {
-    email: 'contact@timdav.is',
-    password: 'foobarbaz',
-    firstName: 'Tim',
-    lastName: 'Davis'
-  }
 
   beforeEach(inject(async ({ _client }) => {
     client = _client
