@@ -1,3 +1,5 @@
+import camelKeys from '../../common/camel-keys'
+
 const MAXIMUM_TRANSACTIONS = 10000
 
 export default function transactionsGateway({ knex }) {
@@ -21,6 +23,22 @@ export default function transactionsGateway({ knex }) {
           'updatedAt'
         ])
       return created
+    },
+    async findByUserId({ userId, page = 1 }) {
+      const columns = [
+        'amount',
+        'createdAt'
+      ]
+      const offset = (page - 1) * 10
+      const { rows: transactions } = await knex.raw(`
+        select ??
+          from transactions
+         where user_id = ?
+         order by created_at asc
+        offset ? rows
+         fetch first 10 rows only
+      `, [columns, userId, offset])
+      return camelKeys(transactions)
     }
   }
 }

@@ -1,6 +1,6 @@
 import { inject, expect, TEST_USER } from '../test'
 
-describe('/auth/sign-up', () => {
+describe('POST /auth/sign-up', () => {
 
   let client
 
@@ -66,7 +66,7 @@ describe('/auth/sign-up', () => {
 
 })
 
-describe('/auth/log-in', () => {
+describe('POST /auth/log-in', () => {
 
   let client
 
