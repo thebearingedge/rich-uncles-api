@@ -23,3 +23,21 @@ export const handleCreate = ({ transactions }) => [
   validateTransaction,
   createTransaction({ transactions })
 ]
+
+const validatePage = validate({
+  query: yup.object().shape({
+    page: yup.number().integer().moreThan(0)
+  })
+})
+
+const listTransactions = ({ transactions }) =>
+  async (req, res) => {
+    const { query: { page }, user: { userId } } = req
+    const transactionList = await transactions.findByUserId({ userId, page })
+    res.json(transactionList)
+  }
+
+export const handleList = ({ transactions }) => [
+  validatePage,
+  listTransactions({ transactions })
+]
